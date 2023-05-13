@@ -24,6 +24,12 @@ function getRecipesFromStorage() {
   // A9. TODO - Complete the functionality as described in this function
   //           header. It is possible in only a single line, but should
   //           be no more than a few lines.
+  let arrTemp = localStorage.getItem("recipes");
+  let arr = JSON.parse(arrTemp);
+  console.log("A9");
+
+  // console.log(typeof arr);
+  return arr;
 }
 
 /**
@@ -35,10 +41,24 @@ function getRecipesFromStorage() {
  */
 function addRecipesToDocument(recipes) {
   // A10. TODO - Get a reference to the <main> element
+  const mainElem = document.querySelector("main");
+
+  console.log("A10");
   // A11. TODO - Loop through each of the recipes in the passed in array,
   //            create a <recipe-card> element for each one, and populate
   //            each <recipe-card> with that recipe data using element.data = ...
   //            Append each element to <main>
+
+  let temp = recipes[0];
+  for(let i=0; i<recipes.length;i++){
+    let newCard = document.createElement("recipe-card");
+    newCard.setdata(recipes[i]);
+    //newCard.data({ imgAlt: "Spooky Ghost Cookies", imgSrc: "./assets/images/1_spooky-ghost-cookies.jpeg", ingredients: "Light corn syrup, almond, black food coloring, powdered sugar,", lengthTime: "2 hr", numRatings: 1, organization: "Delish.com", rating: 5, titleLnk: "https://www.delish.com/holiday-recipes/halloween/a28637917/ghost-cookies-recipe/", titleTxt: "Spooky Ghost Cookies" });
+
+    mainElem.append(newCard);
+  }
+
+  console.log("A11");
 }
 
 /**
