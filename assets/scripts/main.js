@@ -26,9 +26,7 @@ function getRecipesFromStorage() {
   //           be no more than a few lines.
   let arrTemp = localStorage.getItem("recipes");
   let arr = JSON.parse(arrTemp);
-  console.log("A9");
 
-  // console.log(typeof arr);
   return arr;
 }
 
@@ -43,13 +41,11 @@ function addRecipesToDocument(recipes) {
   // A10. TODO - Get a reference to the <main> element
   const mainElem = document.querySelector("main");
 
-  console.log("A10");
   // A11. TODO - Loop through each of the recipes in the passed in array,
   //            create a <recipe-card> element for each one, and populate
   //            each <recipe-card> with that recipe data using element.data = ...
   //            Append each element to <main>
 
-  let temp = recipes[0];
   for(let i=0; i<recipes.length;i++){
     let newCard = document.createElement("recipe-card");
     newCard.setdata(recipes[i]);
@@ -58,7 +54,6 @@ function addRecipesToDocument(recipes) {
     mainElem.append(newCard);
   }
 
-  console.log("A11");
 }
 
 /**
@@ -71,6 +66,8 @@ function saveRecipesToStorage(recipes) {
   // B1. TODO - Complete the functionality as described in this function
   //            header. It is possible in only a single line, but should
   //            be no more than a few lines.
+  let temp = JSON.stringify(recipes);
+  localStorage.setItem("recipes", temp);
 }
 
 /**
@@ -78,28 +75,65 @@ function saveRecipesToStorage(recipes) {
  * <button>.
  */
 function initFormHandler() {
+  let mainE = document.querySelector("main");
 
   // B2. TODO - Get a reference to the <form> element
+  const formElem = document.querySelector("form");
   
   // B3. TODO - Add an event listener for the 'submit' event, which fires when the
   //            submit button is clicked
-
+  const formB = formElem.querySelectorAll("button");
+  const submitB = formB[0];
+  submitB.addEventListener("click", (event) =>{
   // Steps B4-B9 will occur inside the event listener from step B3
   // B4. TODO - Create a new FormData object from the <form> element reference above
+  let formData = new FormData(formElem);
   // B5. TODO - Create an empty object (I'll refer to this object as recipeObject to
   //            make this easier to read), and then extract the keys and corresponding
   //            values from the FormData object and insert them into recipeObject
+  event.preventDefault();
+  let recipeObject ={};
+
+    recipeObject.imgSrc = formData.get("imgSrc");
+    recipeObject.imgAlt = formData.get("imgAlt");
+    recipeObject.titleLnk = formData.get("titleLnk");
+    recipeObject.titleTxt = formData.get("titleTxt");
+    recipeObject.organization = formData.get("organization");
+    recipeObject.rating = Number(formData.get("rating"));
+    recipeObject.numRatings = Number(formData.get("numRatings"));
+    recipeObject.lengthTime = formData.get("lengthTime");
+    recipeObject.ingredients = formData.get("ingredients");
+
+  
   // B6. TODO - Create a new <recipe-card> element
+  const newRecipe = document.createElement("recipe-card");
   // B7. TODO - Add the recipeObject data to <recipe-card> using element.data
+  newRecipe.setdata(recipeObject);
   // B8. TODO - Append this new <recipe-card> to <main>
+  mainE.append(newRecipe);
   // B9. TODO - Get the recipes array from localStorage, add this new recipe to it, and
   //            then save the recipes array back to localStorage
+  let recipes = getRecipesFromStorage();
+  recipes.push(recipeObject);
+  //console.log(recipes);
+  saveRecipesToStorage(recipes);
+
+  formElem.reset();
+
+  });
 
   // B10. TODO - Get a reference to the "Clear Local Storage" button
+  const clearB = formB[1];
   // B11. TODO - Add a click event listener to clear local storage button
+  clearB.addEventListener("click", (event) =>{
+    // Steps B12 & B13 will occur inside the event listener from step B11
+    // B12. TODO - Clear the local storage
+    localStorage.clear();
+    // B13. TODO - Delete the contents of <main>
+    mainE.innerHTML = "";
+
+  });
+
   
-  // Steps B12 & B13 will occur inside the event listener from step B11
-  // B12. TODO - Clear the local storage
-  // B13. TODO - Delete the contents of <main>
 
 }
